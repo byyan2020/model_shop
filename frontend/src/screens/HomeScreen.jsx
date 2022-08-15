@@ -5,16 +5,19 @@ import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProducts } from "../actions/productActions";
+import { useParams } from "react-router-dom";
 
 function HomeScreen() {
+	const { keyword } = useParams();
+
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);
 	const { loading, error, products } = productList;
 
 	useEffect(() => {
-		dispatch(listProducts());
-	}, [dispatch]);
+		dispatch(listProducts(keyword));
+	}, [dispatch, keyword]);
 
 	return (
 		<>
@@ -26,7 +29,14 @@ function HomeScreen() {
 			) : (
 				<Row>
 					{products.map((product) => (
-						<Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+						<Col
+							className="align-items-stretch d-flex"
+							key={product._id}
+							sm={12}
+							md={6}
+							lg={4}
+							xl={3}
+						>
 							<Product product={product} />
 						</Col>
 					))}
